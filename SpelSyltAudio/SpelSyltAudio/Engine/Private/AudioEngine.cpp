@@ -92,7 +92,7 @@ void SSAL::CAudioEngine::DestroySource(CSoundSource& InSource)
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::BindBufferToSource(CSoundSource& InSource, SWavFormat& InWav)
+void SSAL::CAudioEngine::BindBufferToSource(CSoundSource& InSource, SWavFile& InWav)
 {
 	ALenum Format = 0;
 

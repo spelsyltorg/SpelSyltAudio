@@ -27,7 +27,7 @@ void SSAL::CSoundSource::DestroySource()
 
 //----------------------------------------------------------------------
 
-void SSAL::CSoundSource::PlaySound(SWavFormat& InWavFile)
+void SSAL::CSoundSource::PlaySound(SWavFile& InWavFile)
 {
 	AudioEngine.BindBufferToSource(*this, InWavFile);
 }

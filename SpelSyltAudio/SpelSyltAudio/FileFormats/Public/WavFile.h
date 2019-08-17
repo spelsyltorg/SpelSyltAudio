@@ -4,7 +4,7 @@
 
 namespace SSAL
 {
-	struct SWavFormat
+	struct SWavFile
 	{
 	public:
 		void LoadFromMemory(char* InDataStart, unsigned int InSize);

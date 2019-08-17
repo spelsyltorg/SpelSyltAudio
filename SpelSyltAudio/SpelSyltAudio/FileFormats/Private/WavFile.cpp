@@ -42,7 +42,7 @@ little	...		Data
 
 //----------------------------------------------------------------------
 
-void SSAL::SWavFormat::LoadFromMemory(char* InDataStart, unsigned int InSize)
+void SSAL::SWavFile::LoadFromMemory(char* InDataStart, unsigned int InSize)
 {
 	char* CurrentData = InDataStart;
 	
@@ -64,7 +64,7 @@ void SSAL::SWavFormat::LoadFromMemory(char* InDataStart, unsigned int InSize)
 
 //----------------------------------------------------------------------
 
-void SSAL::SWavFormat::LoadFromFile(const char* InPath)
+void SSAL::SWavFile::LoadFromFile(const char* InPath)
 {
 	std::ifstream FileStream(InPath, std::ifstream::binary);
 	FileStream.seekg(0, std::iostream::end);
@@ -83,7 +83,7 @@ void SSAL::SWavFormat::LoadFromFile(const char* InPath)
 
 //----------------------------------------------------------------------
 
-void SSAL::SWavFormat::GetData(char*& OutData, int& OutDataSize)
+void SSAL::SWavFile::GetData(char*& OutData, int& OutDataSize)
 {
 	OutData = Data;
 	OutDataSize = DataSize;
@@ -91,21 +91,21 @@ void SSAL::SWavFormat::GetData(char*& OutData, int& OutDataSize)
 
 //----------------------------------------------------------------------
 
-int SSAL::SWavFormat::GetSampleRate() const
+int SSAL::SWavFile::GetSampleRate() const
 {
 	return SampleRate;
 }
 
 //----------------------------------------------------------------------
 
-SSAL::EAudioFormat SSAL::SWavFormat::GetFormat() const
+SSAL::EAudioFormat SSAL::SWavFile::GetFormat() const
 {
 	return Format;
 }
 
 //----------------------------------------------------------------------
 
-SSAL::EAudioFileError SSAL::SWavFormat::ReadChunk(char*& InData)
+SSAL::EAudioFileError SSAL::SWavFile::ReadChunk(char*& InData)
 {
 	const CL::ESystemEndianType SystemEndianType = CL::GetSystemEndianType();
 
@@ -146,7 +146,7 @@ SSAL::EAudioFileError SSAL::SWavFormat::ReadChunk(char*& InData)
 
 //----------------------------------------------------------------------
 
-SSAL::EAudioFileError SSAL::SWavFormat::ReadSubchunkOne(char*& InData)
+SSAL::EAudioFileError SSAL::SWavFile::ReadSubchunkOne(char*& InData)
 {
 	const CL::ESystemEndianType SystemEndianType = CL::GetSystemEndianType();
 
@@ -256,7 +256,7 @@ SSAL::EAudioFileError SSAL::SWavFormat::ReadSubchunkOne(char*& InData)
 	return EAudioFileError::None;
 }
 
-SSAL::EAudioFileError SSAL::SWavFormat::ReadSubchunkTwo(char*& InData)
+SSAL::EAudioFileError SSAL::SWavFile::ReadSubchunkTwo(char*& InData)
 {
 	const CL::ESystemEndianType SystemEndianType = CL::GetSystemEndianType();
 
@@ -293,7 +293,7 @@ SSAL::EAudioFileError SSAL::SWavFormat::ReadSubchunkTwo(char*& InData)
 
 //----------------------------------------------------------------------
 
-void SSAL::SWavFormat::SetFormat(short InBitsPerSample, short InChannelCount)
+void SSAL::SWavFile::SetFormat(short InBitsPerSample, short InChannelCount)
 {
 	if (InBitsPerSample == 8 && InChannelCount == 1)
 	{

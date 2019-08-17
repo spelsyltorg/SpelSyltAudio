@@ -4,7 +4,7 @@
 
 namespace SSAL
 {
-	struct SWavFormat;
+	struct SWavFile;
 
 	class CAudioEngine
 	{
@@ -16,7 +16,7 @@ namespace SSAL
 		CSoundSource MakeSource();
 		void DestroySource(CSoundSource& InSource);
 
-		void BindBufferToSource(CSoundSource& InSource, SWavFormat& InWav);
+		void BindBufferToSource(CSoundSource& InSource, SWavFile& InWav);
 		void SetSourceGain(CSoundSource& InSource, float InGain);
 
 	private:

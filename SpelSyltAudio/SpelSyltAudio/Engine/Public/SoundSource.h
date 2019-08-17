@@ -3,7 +3,7 @@
 namespace SSAL
 {
 	class CAudioEngine;
-	struct SWavFormat;
+	struct SWavFile;
 
 	class CSoundSource
 	{
@@ -15,7 +15,7 @@ namespace SSAL
 		CSoundSource(const CSoundSource& InOther);
 		void DestroySource();
 
-		void PlaySound(SWavFormat& InWavFile);
+		void PlaySound(SWavFile& InWavFile);
 
 		void SetVolume(float InVolume);
 

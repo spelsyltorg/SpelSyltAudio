@@ -10,7 +10,7 @@ int main()
 	AE.Initialize(1);
 	SSAL::CSoundSource Source = AE.MakeSource();
 
-	SSAL::SWavFormat WavFile;
+	SSAL::SWavFile WavFile;
 	WavFile.LoadFromFile("Norrsken.wav");
 
 	Source.PlaySound(WavFile);
