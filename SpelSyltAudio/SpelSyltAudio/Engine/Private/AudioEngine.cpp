@@ -132,6 +132,28 @@ void SSAL::CAudioEngine::SetSourceGain(CSoundSource& InSource, float InGain)
 
 //----------------------------------------------------------------------
 
+void SSAL::CAudioEngine::SetSourcePosition(CSoundSource& InSource, float InX, float InY, float InZ)
+{
+	alSource3f(InSource.SourceID, AL_POSITION, InX, InY, InZ);
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::SetSourceLooping(CSoundSource& InSource, bool InLooping)
+{
+	int Looping = InLooping ? 1 : 0;
+	alSourcei(InSource.SourceID, AL_LOOPING, Looping);
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::SetListenerPosition(float InX, float InY, float InZ)
+{
+	alListener3f(AL_POSITION, InX, InY, InZ);
+}
+
+//----------------------------------------------------------------------
+
 void SSAL::CAudioEngine::ShutDown()
 {
 	ALCcontext* Context = alcGetCurrentContext();
