@@ -1,0 +1,4 @@
+#pragma once
+
+#define FLOATING_POINT_ACCEPTANCE 1.192092896e-07F //FLT_EPSILON
+#define PI 3.1416f
