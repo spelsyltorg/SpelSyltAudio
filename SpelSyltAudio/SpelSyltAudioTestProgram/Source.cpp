@@ -13,7 +13,7 @@ int main()
 	SSAL::CSoundSource Source = AE.MakeSource();
 
 	SSAL::SWavFile WavFile;
-	WavFile.LoadFromFile("eagle.wav");
+	WavFile.LoadFromFile("Norrsken.wav");
 
 	AE.SetListenerPosition(0.f, 0.f, 0.f);
 	Source.SetPosition(0.f, 0.f, 0.f);
@@ -34,6 +34,15 @@ int main()
 		Source.SetPosition(0.f, 0.f, sinf(TotalTime) * 10.f);
 
 		PreviousTime = CurrentTime;
+
+		if (TotalTime >= 5.f && TotalTime <= 10.f)
+		{
+			Source.Stop();
+		}
+		else if (TotalTime >= 10.f)
+		{
+			Source.Play();
+		}
 	}
 
 	return 0;
