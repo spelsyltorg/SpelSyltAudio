@@ -16,6 +16,9 @@ namespace SSAL
 		void DestroySource();
 
 		void PlaySound(SWavFile& InWavFile, bool InLoop = false);
+		void Play(bool InLoop = false);
+		void Pause();
+		void Stop();
 		void SetVolume(float InVolume);
 
 		void SetPosition(float InX, float InY, float InZ);

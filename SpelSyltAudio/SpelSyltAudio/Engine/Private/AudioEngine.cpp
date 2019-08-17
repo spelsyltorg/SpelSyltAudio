@@ -120,7 +120,27 @@ void SSAL::CAudioEngine::BindBufferToSource(CSoundSource& InSource, SWavFile& In
 
 	alBufferData(Buffers[NextFreeBuffer], Format, SoundData, SoundDataSize, InWav.GetSampleRate());
 	alSourcei(InSource.SourceID, AL_BUFFER, Buffers[NextFreeBuffer++]);
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::PlaySource(CSoundSource& InSource)
+{
 	alSourcePlay(InSource.SourceID);
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::PauseSource(CSoundSource& InSource)
+{
+	alSourcePause(InSource.SourceID);
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::StopSource(CSoundSource& InSource)
+{
+	alSourceStop(InSource.SourceID);
 }
 
 //----------------------------------------------------------------------
@@ -143,6 +163,16 @@ void SSAL::CAudioEngine::SetSourceLooping(CSoundSource& InSource, bool InLooping
 {
 	int Looping = InLooping ? 1 : 0;
 	alSourcei(InSource.SourceID, AL_LOOPING, Looping);
+}
+
+//----------------------------------------------------------------------
+
+bool SSAL::CAudioEngine::IsSourcePlaying(CSoundSource& InSource)
+{
+	int State = 0;
+	alGetSourcei(InSource.SourceID, AL_SOURCE_STATE, &State);
+
+	return State == AL_PLAYING;
 }
 
 //----------------------------------------------------------------------

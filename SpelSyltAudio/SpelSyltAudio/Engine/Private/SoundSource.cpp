@@ -30,11 +30,34 @@ void SSAL::CSoundSource::DestroySource()
 void SSAL::CSoundSource::PlaySound(SWavFile& InWavFile, bool InLoop)
 {
 	AudioEngine.BindBufferToSource(*this, InWavFile);
+	AudioEngine.SetSourceLooping(*this, InLoop);
+	AudioEngine.PlaySource(*this);
+}
 
-	if (InLoop)
+//----------------------------------------------------------------------
+
+void SSAL::CSoundSource::Play(bool InLoop)
+{
+	AudioEngine.SetSourceLooping(*this, InLoop);
+
+	if (!AudioEngine.IsSourcePlaying(*this))
 	{
-		AudioEngine.SetSourceLooping(*this, InLoop);
+		AudioEngine.PlaySource(*this);
 	}
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CSoundSource::Pause()
+{
+	AudioEngine.PauseSource(*this);
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CSoundSource::Stop()
+{
+	AudioEngine.StopSource(*this);
 }
 
 //----------------------------------------------------------------------
