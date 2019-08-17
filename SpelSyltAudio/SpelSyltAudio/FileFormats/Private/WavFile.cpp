@@ -177,7 +177,7 @@ SSAL::EAudioFileError SSAL::SWavFormat::ReadSubchunkOne(char*& InData)
 
 	InData = &InData[4];
 
-	//Get the auido format. Expecting PCM (non compressed) which is 1
+	//Get the audio format. Expecting PCM (non compressed) which is 1
 	short FormatMem = 0;
 	memcpy_s(&FormatMem, sizeof(FormatMem), InData, 2);
 
