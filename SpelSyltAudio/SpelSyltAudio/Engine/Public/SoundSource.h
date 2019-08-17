@@ -17,6 +17,8 @@ namespace SSAL
 
 		void PlaySound(SWavFormat& InWavFile);
 
+		void SetVolume(float InVolume);
+
 	private:
 		CAudioEngine& AudioEngine;
 		unsigned int SourceID;

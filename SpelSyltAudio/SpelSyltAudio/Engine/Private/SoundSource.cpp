@@ -34,4 +34,9 @@ void SSAL::CSoundSource::PlaySound(SWavFormat& InWavFile)
 
 //----------------------------------------------------------------------
 
+void SSAL::CSoundSource::SetVolume(float InVolume)
+{
+	AudioEngine.SetSourceGain(*this, InVolume);
+}
+
 //----------------------------------------------------------------------

@@ -17,6 +17,7 @@ namespace SSAL
 		void DestroySource(CSoundSource& InSource);
 
 		void BindBufferToSource(CSoundSource& InSource, SWavFormat& InWav);
+		void SetSourceGain(CSoundSource& InSource, float InGain);
 
 	private:
 		void ShutDown();

@@ -87,7 +87,6 @@ SSAL::CSoundSource SSAL::CAudioEngine::MakeSource()
 void SSAL::CAudioEngine::DestroySource(CSoundSource& InSource)
 {
 	alDeleteSources(1, &InSource.SourceID);
-	InSource.AudioEngine = nullptr;
 	InSource.SourceID = 0;
 }
 
@@ -119,12 +118,16 @@ void SSAL::CAudioEngine::BindBufferToSource(CSoundSource& InSource, SWavFormat& 
 	int SoundDataSize = 0;
 	InWav.GetData(SoundData, SoundDataSize);
 
-	alListener3f(AL_POSITION, 0.f, 0.f, 0.f);
-	alSource3f(InSource.SourceID, AL_POSITION, 0.f, 0.f, 0.f);
-
 	alBufferData(Buffers[NextFreeBuffer], Format, SoundData, SoundDataSize, InWav.GetSampleRate());
 	alSourcei(InSource.SourceID, AL_BUFFER, Buffers[NextFreeBuffer++]);
 	alSourcePlay(InSource.SourceID);
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::SetSourceGain(CSoundSource& InSource, float InGain)
+{
+	alSourcef(InSource.SourceID, AL_GAIN, InGain);
 }
 
 //----------------------------------------------------------------------
