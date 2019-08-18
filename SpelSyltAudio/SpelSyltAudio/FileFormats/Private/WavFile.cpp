@@ -7,32 +7,7 @@
 #include <fstream>
 #include <memory>
 
-
 //Specs for the Wav format can be found here: https://web.archive.org/web/20141213140451/https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
-
-/*
-Shorthand
-
-Endian	Bytes	Name
-*CHUNK*
-big		4		Chunk ID - Expected to be "RIFF"
-little	4		Chunk Size
-big		4		Format - Expected to be "WAVE"
-*SUBCHUNK 1*
-big		4		Subchunk 1 ID - Expected to be "fmt "
-little	4		Subchunk 1 Size
-little	2		Audio Format
-little	2		Channel Count
-little	4		Sample Rate
-little	4		Byte Rate
-little	2		Block Align
-little	2		Bits Per Sample
-*SUBCHUNK 2*
-big		4		Subchunk 2 ID - Expected to be "data"
-little	4		Subchunk 2 Size
-little	...		Data
-
-*/
 
 #define WAV_HEADER_SIZE 0x00000044
 #define RIFF			0x46464952
