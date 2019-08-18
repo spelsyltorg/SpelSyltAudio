@@ -167,12 +167,21 @@ void SSAL::CAudioEngine::SetSourceLooping(CSoundSource& InSource, bool InLooping
 
 //----------------------------------------------------------------------
 
-bool SSAL::CAudioEngine::IsSourcePlaying(CSoundSource& InSource)
+bool SSAL::CAudioEngine::IsSourcePlaying(const CSoundSource& InSource)
 {
 	int State = 0;
 	alGetSourcei(InSource.SourceID, AL_SOURCE_STATE, &State);
 
 	return State == AL_PLAYING;
+}
+
+//----------------------------------------------------------------------
+
+float SSAL::CAudioEngine::GetSourceGain(const CSoundSource& InSource) const
+{
+	float Gain = 0.f;
+	alGetSourcef(InSource.SourceID, AL_GAIN, &Gain);
+	return Gain;
 }
 
 //----------------------------------------------------------------------

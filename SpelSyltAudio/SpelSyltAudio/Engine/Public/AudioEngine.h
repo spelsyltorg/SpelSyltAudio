@@ -24,7 +24,8 @@ namespace SSAL
 		void SetSourcePosition(CSoundSource& InSource, float InX, float InY, float InZ);
 		void SetSourceLooping(CSoundSource& InSource, bool InLooping);
 
-		bool IsSourcePlaying(CSoundSource& InSource);
+		bool IsSourcePlaying(const CSoundSource& InSource);
+		float GetSourceGain(const CSoundSource& InSource) const;
 		//END SOURCE FUNCTIONS
 
 		//BEGIN LISTENER FUNCTIONS

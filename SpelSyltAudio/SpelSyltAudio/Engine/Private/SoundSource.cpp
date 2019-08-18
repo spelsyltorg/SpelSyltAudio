@@ -48,6 +48,13 @@ void SSAL::CSoundSource::Play(bool InLoop)
 
 //----------------------------------------------------------------------
 
+bool SSAL::CSoundSource::IsPlaying() const
+{
+	return AudioEngine.IsSourcePlaying(*this);
+}
+
+//----------------------------------------------------------------------
+
 void SSAL::CSoundSource::Pause()
 {
 	AudioEngine.PauseSource(*this);
@@ -79,6 +86,13 @@ void SSAL::CSoundSource::SetPosition(float InX, float InY, float InZ)
 void SSAL::CSoundSource::SetLooping(bool InLooping)
 {
 	AudioEngine.SetSourceLooping(*this, InLooping);
+}
+
+//----------------------------------------------------------------------
+
+float SSAL::CSoundSource::GetVolume() const
+{
+	return AudioEngine.GetSourceGain(*this);
 }
 
 //----------------------------------------------------------------------
