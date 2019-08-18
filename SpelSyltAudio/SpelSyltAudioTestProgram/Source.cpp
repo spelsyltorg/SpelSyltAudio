@@ -18,6 +18,7 @@ int main()
 	AE.SetListenerPosition(0.f, 0.f, 0.f);
 	Source.SetPosition(0.f, 0.f, 0.f);
 
+	Source.SetVolume(1.f);
 	Source.PlaySound(WavFile, true);
 
 	auto CurrentTime = std::chrono::high_resolution_clock::now();
@@ -30,7 +31,7 @@ int main()
 		CurrentTime = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> DT = std::chrono::duration_cast<std::chrono::duration<double>>(CurrentTime - PreviousTime);
 		TotalTime += (float)DT.count();
-		
+
 		Source.SetPosition(0.f, 0.f, sinf(TotalTime) * 10.f);
 
 		PreviousTime = CurrentTime;
