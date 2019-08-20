@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Public\AudioEngine.h" />
+    <ClInclude Include="Engine\Public\AudioSource.h" />
     <ClInclude Include="Engine\Public\MusicSource.h" />
     <ClInclude Include="Engine\Public\SoundSource.h" />
     <ClInclude Include="Engine\Public\SSALTypes.h" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Private\AudioEngine.cpp" />
+    <ClCompile Include="Engine\Private\AudioSource.cpp" />
     <ClCompile Include="Engine\Private\MusicSource.cpp" />
     <ClCompile Include="Engine\Private\SoundSource.cpp" />
     <ClCompile Include="FileFormats\Private\OggFile.cpp" />
