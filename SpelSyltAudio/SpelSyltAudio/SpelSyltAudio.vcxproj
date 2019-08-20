@@ -97,6 +97,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)external\include\;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)external\include\;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,14 +143,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Public\AudioEngine.h" />
+    <ClInclude Include="Engine\Public\MusicSource.h" />
     <ClInclude Include="Engine\Public\SoundSource.h" />
+    <ClInclude Include="Engine\Public\SSALTypes.h" />
     <ClInclude Include="FileFormats\Public\AudioFileErrors.h" />
     <ClInclude Include="FileFormats\Public\AudioFormats.h" />
+    <ClInclude Include="FileFormats\Public\OggFile.h" />
+    <ClInclude Include="FileFormats\Public\VorbisWrapper.h" />
     <ClInclude Include="FileFormats\Public\WavFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Private\AudioEngine.cpp" />
+    <ClCompile Include="Engine\Private\MusicSource.cpp" />
     <ClCompile Include="Engine\Private\SoundSource.cpp" />
+    <ClCompile Include="FileFormats\Private\OggFile.cpp" />
+    <ClCompile Include="FileFormats\Private\VorbisWrapper.cpp" />
     <ClCompile Include="FileFormats\Private\WavFile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
