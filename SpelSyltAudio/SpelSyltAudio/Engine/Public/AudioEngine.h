@@ -1,10 +1,12 @@
 #pragma once
-
+#include <SpelSyltAudio/Engine/Public/SSALTypes.h>
 #include <SpelSyltAudio/Engine/Public/SoundSource.h>
+#include <SpelSyltAudio/Engine/Public/MusicSource.h>
 
 namespace SSAL
 {
 	struct SWavFile;
+	struct SOGGChunk;
 
 	class CAudioEngine
 	{
@@ -14,15 +16,22 @@ namespace SSAL
 		bool Initialize(int InBufferCount);
 
 		//BEGIN SOURCE FUNCTIONS
-		CSoundSource MakeSource();
-		void DestroySource(CSoundSource& InSource);
-		void BindBufferToSource(CSoundSource& InSource, SWavFile& InWav);
-		void PlaySource(CSoundSource& InSource);
-		void PauseSource(CSoundSource& InSource);
-		void StopSource(CSoundSource& InSource);
-		void SetSourceGain(CSoundSource& InSource, float InGain);
-		void SetSourcePosition(CSoundSource& InSource, float InX, float InY, float InZ);
-		void SetSourceLooping(CSoundSource& InSource, bool InLooping);
+		CSoundSource MakeSoundSource();
+		CMusicSource MakeMusicSource();
+
+		void AddBufferToSourceQueue(FSourceID InSourceID, FBufferID InBuffer, SOGGChunk& InDataChunk);
+		void DequeueBuffersFromSource(FSourceID InSourceID, int FreeBufferCount, FBufferID*& OutFreedBuffers);
+		bool HaveProcessedBuffers(FSourceID InSourceID, int& OutProcessedCount);
+		int GetBufferQueueCount(FSourceID InSurceID);
+
+		void DestroySource(FSourceID InSource);
+		void BindBufferToSource(FSourceID InSource, SWavFile& InWav);
+		void PlaySource(FSourceID InSource);
+		void PauseSource(FSourceID InSource);
+		void StopSource(FSourceID InSource);
+		void SetSourceGain(FSourceID InSource, float InGain);
+		void SetSourcePosition(FSourceID InSource, float InX, float InY, float InZ);
+		void SetSourceLooping(FSourceID InSource, bool InLooping);
 
 		bool IsSourcePlaying(const CSoundSource& InSource);
 		float GetSourceGain(const CSoundSource& InSource) const;

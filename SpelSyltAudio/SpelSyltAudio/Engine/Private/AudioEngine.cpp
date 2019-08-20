@@ -1,11 +1,41 @@
 #include <SpelSyltAudio/Engine/Public/AudioEngine.h>
 
 #include <SpelSyltAudio/FileFormats/Public/WavFile.h>
+#include <SpelSyltAudio/FileFormats/Public/OggFile.h>
 
 #pragma comment(lib, "OpenAL32")
 
 #include <al.h>
 #include <alc.h>
+
+//----------------------------------------------------------------------
+
+namespace
+{
+	ALenum SSALFormatToOALFormat(SSAL::EAudioFormat InSSALFormat)
+	{
+		switch (InSSALFormat)
+		{
+		case SSAL::EAudioFormat::Mono8:
+			return AL_FORMAT_MONO8;
+			break;
+		case SSAL::EAudioFormat::Mono16:
+			return AL_FORMAT_MONO16;
+			break;
+		case SSAL::EAudioFormat::Stereo8:
+			return AL_FORMAT_STEREO8;
+			break;
+		case SSAL::EAudioFormat::Stereo16:
+			return AL_FORMAT_STEREO16;
+			break;
+		default:
+			return -1;
+			break;
+		}
+
+		return -1;
+	}
+}
 
 //----------------------------------------------------------------------
 
@@ -71,7 +101,7 @@ bool SSAL::CAudioEngine::Initialize(int InBufferCount)
 
 //----------------------------------------------------------------------
 
-SSAL::CSoundSource SSAL::CAudioEngine::MakeSource()
+SSAL::CSoundSource SSAL::CAudioEngine::MakeSoundSource()
 {
 	unsigned int SourceID = 0;
 	alGenSources(1, &SourceID);
@@ -84,85 +114,125 @@ SSAL::CSoundSource SSAL::CAudioEngine::MakeSource()
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::DestroySource(CSoundSource& InSource)
+SSAL::CMusicSource SSAL::CAudioEngine::MakeMusicSource()
 {
-	alDeleteSources(1, &InSource.SourceID);
-	InSource.SourceID = 0;
+	unsigned int SourceID = 0;
+	alGenSources(1, &SourceID);
+
+	FBufferID BuffersForSource[MUSIC_BUFFER_COUNT];
+	for (short i = 0; i < MUSIC_BUFFER_COUNT; ++i)
+	{
+		BuffersForSource[i] = Buffers[NextFreeBuffer++];
+	}
+
+	CMusicSource CreatedSource(SourceID, BuffersForSource, *this);
+	return CreatedSource;
 }
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::BindBufferToSource(CSoundSource& InSource, SWavFile& InWav)
+void SSAL::CAudioEngine::DestroySource(FSourceID InSourceID)
 {
-	ALenum Format = 0;
+	alDeleteSources(1, &InSourceID);
+}
 
-	switch (InWav.GetFormat())
-	{
-	case EAudioFormat::Mono8:
-		Format = AL_FORMAT_MONO8;
-		break;
-	case EAudioFormat::Mono16:
-		Format = AL_FORMAT_MONO16;
-		break;
-	case EAudioFormat::Stereo8:
-		Format = AL_FORMAT_STEREO8;
-		break;
-	case EAudioFormat::Stereo16:
-		Format = AL_FORMAT_STEREO16;
-		break;
-	default:
-		break;
-	}
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::AddBufferToSourceQueue(FSourceID InSourceID, FBufferID InBufferID, SOGGChunk& InDataChunk)
+{
+	ALenum Format = ::SSALFormatToOALFormat(InDataChunk.Format);
+	alBufferData(InBufferID, Format, InDataChunk.Data, InDataChunk.DataSize, InDataChunk.SampleRate);
+
+	int ErrorCode = alGetError();
+	volatile const int OOM = AL_OUT_OF_MEMORY;
+	volatile const int IV = AL_INVALID_VALUE;
+	volatile const int IE = AL_INVALID_ENUM;
+
+
+	alSourceQueueBuffers(InSourceID, 1, &InBufferID);
+
+	ErrorCode = alGetError();
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::DequeueBuffersFromSource(FSourceID InSourceID, int FreeBufferCount, FBufferID*& OutFreedBuffers)
+{
+	alSourceUnqueueBuffers(InSourceID, FreeBufferCount, OutFreedBuffers);
+}
+
+//----------------------------------------------------------------------
+
+bool SSAL::CAudioEngine::HaveProcessedBuffers(FSourceID InSourceID, int& OutProcessedCount)
+{
+	alGetSourcei(InSourceID, AL_BUFFERS_PROCESSED, &OutProcessedCount);
+	return OutProcessedCount > 0;
+}
+
+//----------------------------------------------------------------------
+
+int SSAL::CAudioEngine::GetBufferQueueCount(FSourceID InSourceID)
+{
+	int NumBuffers = 0;
+	alGetSourcei(InSourceID, AL_BUFFERS_QUEUED, &NumBuffers);
+	return NumBuffers;
+}
+
+//----------------------------------------------------------------------
+
+void SSAL::CAudioEngine::BindBufferToSource(FSourceID InSourceID, SWavFile& InWav)
+{
+	ALenum Format = ::SSALFormatToOALFormat(InWav.GetFormat());
 
 	char* SoundData = nullptr;
 	int SoundDataSize = 0;
 	InWav.GetData(SoundData, SoundDataSize);
 
 	alBufferData(Buffers[NextFreeBuffer], Format, SoundData, SoundDataSize, InWav.GetSampleRate());
-	alSourcei(InSource.SourceID, AL_BUFFER, Buffers[NextFreeBuffer++]);
+	alSourcei(InSourceID, AL_BUFFER, Buffers[NextFreeBuffer++]);
 }
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::PlaySource(CSoundSource& InSource)
+void SSAL::CAudioEngine::PlaySource(FSourceID InSourceID)
 {
-	alSourcePlay(InSource.SourceID);
+	alSourcePlay(InSourceID);
 }
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::PauseSource(CSoundSource& InSource)
+void SSAL::CAudioEngine::PauseSource(FSourceID InSourceID)
 {
-	alSourcePause(InSource.SourceID);
+	alSourcePause(InSourceID);
 }
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::StopSource(CSoundSource& InSource)
+void SSAL::CAudioEngine::StopSource(FSourceID InSourceID)
 {
-	alSourceStop(InSource.SourceID);
+	alSourceStop(InSourceID);
 }
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::SetSourceGain(CSoundSource& InSource, float InGain)
+void SSAL::CAudioEngine::SetSourceGain(FSourceID InSourceID, float InGain)
 {
-	alSourcef(InSource.SourceID, AL_GAIN, InGain);
+	alSourcef(InSourceID, AL_GAIN, InGain);
 }
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::SetSourcePosition(CSoundSource& InSource, float InX, float InY, float InZ)
+void SSAL::CAudioEngine::SetSourcePosition(FSourceID InSourceID, float InX, float InY, float InZ)
 {
-	alSource3f(InSource.SourceID, AL_POSITION, InX, InY, InZ);
+	alSource3f(InSourceID, AL_POSITION, InX, InY, InZ);
 }
 
 //----------------------------------------------------------------------
 
-void SSAL::CAudioEngine::SetSourceLooping(CSoundSource& InSource, bool InLooping)
+void SSAL::CAudioEngine::SetSourceLooping(FSourceID InSourceID, bool InLooping)
 {
 	int Looping = InLooping ? 1 : 0;
-	alSourcei(InSource.SourceID, AL_LOOPING, Looping);
+	alSourcei(InSourceID, AL_LOOPING, Looping);
 }
 
 //----------------------------------------------------------------------
