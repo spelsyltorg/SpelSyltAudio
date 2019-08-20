@@ -11,46 +11,39 @@ int main()
 {
 	SSAL::CAudioEngine AE;
 	AE.Initialize(200);
-	SSAL::CMusicSource Source = AE.MakeMusicSource();
-	Source.OpenOGGStream("Norrsken.ogg");
+	
+	SSAL::CSoundSource SoundSource = AE.MakeSoundSource();
 
-	//SSAL::SWavFile WavFile;
-	//WavFile.LoadFromFile("Norrsken.wav");
+	SSAL::CMusicSource MusicSource = AE.MakeMusicSource();
+	MusicSource.OpenOGGStream("Norrsken2.ogg");
+
+	SSAL::SWavFile WavFile;
+	WavFile.LoadFromFile("eagle.wav");
+	SoundSource.BindWavFile(WavFile);
 
 	AE.SetListenerPosition(0.f, 0.f, 0.f);
-	//Source.SetPosition(0.f, 0.f, 0.f);
-	//
-	//Source.SetVolume(1.f);
-	//Source.PlaySound(WavFile, true);
 
-	Source.Play();
-	Source.SetVolume(0.25f);
+	MusicSource.Play();
+	MusicSource.SetVolume(0.25f);
+	
+	SoundSource.Play(true);
 
-	//auto CurrentTime = std::chrono::high_resolution_clock::now();
-	//auto PreviousTime = CurrentTime;
-	//float DT = 0.f;
-	//float TotalTime = 0.f;
+	auto CurrentTime = std::chrono::high_resolution_clock::now();
+	auto PreviousTime = CurrentTime;
+	float DT = 0.f;
+	float TotalTime = 0.f;
 
 	while (true)
 	{
-		//CurrentTime = std::chrono::high_resolution_clock::now();
-		//std::chrono::duration<double> DT = std::chrono::duration_cast<std::chrono::duration<double>>(CurrentTime - PreviousTime);
-		//TotalTime += (float)DT.count();
+		CurrentTime = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> DT = std::chrono::duration_cast<std::chrono::duration<double>>(CurrentTime - PreviousTime);
+		TotalTime += (float)DT.count();
 
-		Source.Tick();
+		MusicSource.Tick();
 
-		//Source.SetPosition(0.f, 0.f, sinf(TotalTime) * 10.f);
-		//
-		//PreviousTime = CurrentTime;
-		//
-		//if (TotalTime >= 5.f && TotalTime <= 10.f)
-		//{
-		//	Source.Stop();
-		//}
-		//else if (TotalTime >= 10.f)
-		//{
-		//	Source.Play();
-		//}
+		SoundSource.SetPosition(0.f, 0.f, sinf(TotalTime) * 10.f);
+		
+		PreviousTime = CurrentTime;
 	}
 
 	return 0;

@@ -1,4 +1,5 @@
 #pragma once
+#include <SpelSyltAudio/Engine/Public/AudioSource.h>
 #include <SpelSyltAudio/Engine/Public/SSALTypes.h>
 #include <SpelSyltAudio/FileFormats/Public/OggFile.h>
 
@@ -8,7 +9,8 @@ namespace SSAL
 {
 	class CAudioEngine;
 
-	class CMusicSource
+	class CMusicSource final
+		: public CAudioSource
 	{
 	public:
 		CMusicSource() = delete;
@@ -18,16 +20,11 @@ namespace SSAL
 		void OpenOGGStream(const char* PathToFile);
 		void CloseOGGStream();
 
-		void Play();
-		void SetVolume(float InVolume);
-
 		void Tick();
 	private:
 		void FillAndEnqueueBuffer(FBufferID InBufferID);
 
 		SOGGFile OggFile;
-		CAudioEngine& AudioEngine;
-		FSourceID SourceID;
 		FBufferID Buffers[MUSIC_BUFFER_COUNT];
 	};
 }

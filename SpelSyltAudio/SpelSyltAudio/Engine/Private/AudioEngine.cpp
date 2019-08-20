@@ -108,7 +108,7 @@ SSAL::CSoundSource SSAL::CAudioEngine::MakeSoundSource()
 
 	int ErrorCode = alGetError();
 
-	CSoundSource CreatedSource(SourceID, *this);
+	CSoundSource CreatedSource(*this, SourceID);
 	return CreatedSource;
 }
 
@@ -237,20 +237,20 @@ void SSAL::CAudioEngine::SetSourceLooping(FSourceID InSourceID, bool InLooping)
 
 //----------------------------------------------------------------------
 
-bool SSAL::CAudioEngine::IsSourcePlaying(const CSoundSource& InSource)
+bool SSAL::CAudioEngine::IsSourcePlaying(FSourceID InSourceID)
 {
 	int State = 0;
-	alGetSourcei(InSource.SourceID, AL_SOURCE_STATE, &State);
+	alGetSourcei(InSourceID, AL_SOURCE_STATE, &State);
 
 	return State == AL_PLAYING;
 }
 
 //----------------------------------------------------------------------
 
-float SSAL::CAudioEngine::GetSourceGain(const CSoundSource& InSource) const
+float SSAL::CAudioEngine::GetSourceGain(FSourceID InSourceID) const
 {
 	float Gain = 0.f;
-	alGetSourcef(InSource.SourceID, AL_GAIN, &Gain);
+	alGetSourcef(InSourceID, AL_GAIN, &Gain);
 	return Gain;
 }
 

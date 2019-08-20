@@ -22,19 +22,19 @@ namespace SSAL
 		void AddBufferToSourceQueue(FSourceID InSourceID, FBufferID InBuffer, SOGGChunk& InDataChunk);
 		void DequeueBuffersFromSource(FSourceID InSourceID, int FreeBufferCount, FBufferID*& OutFreedBuffers);
 		bool HaveProcessedBuffers(FSourceID InSourceID, int& OutProcessedCount);
-		int GetBufferQueueCount(FSourceID InSurceID);
+		int GetBufferQueueCount(FSourceID InSourceID);
 
-		void DestroySource(FSourceID InSource);
-		void BindBufferToSource(FSourceID InSource, SWavFile& InWav);
-		void PlaySource(FSourceID InSource);
-		void PauseSource(FSourceID InSource);
-		void StopSource(FSourceID InSource);
-		void SetSourceGain(FSourceID InSource, float InGain);
-		void SetSourcePosition(FSourceID InSource, float InX, float InY, float InZ);
-		void SetSourceLooping(FSourceID InSource, bool InLooping);
+		void DestroySource(FSourceID InSourceID);
+		void BindBufferToSource(FSourceID InSourceID, SWavFile& InWav);
+		void PlaySource(FSourceID InSourceID);
+		void PauseSource(FSourceID InSourceID);
+		void StopSource(FSourceID InSourceID);
+		void SetSourceGain(FSourceID InSourceID, float InGain);
+		void SetSourcePosition(FSourceID InSourceID, float InX, float InY, float InZ);
+		void SetSourceLooping(FSourceID InSourceID, bool InLooping);
 
-		bool IsSourcePlaying(const CSoundSource& InSource);
-		float GetSourceGain(const CSoundSource& InSource) const;
+		bool IsSourcePlaying(FSourceID InSourceID);
+		float GetSourceGain(FSourceID InSourceID) const;
 		//END SOURCE FUNCTIONS
 
 		//BEGIN LISTENER FUNCTIONS

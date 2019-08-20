@@ -1,4 +1,5 @@
 #pragma once
+#include <SpelSyltAudio/Engine/Public/AudioSource.h>
 #include <SpelSyltAudio/Engine/Public/SSALTypes.h>
 
 namespace SSAL
@@ -6,31 +7,15 @@ namespace SSAL
 	class CAudioEngine;
 	struct SWavFile;
 
-	class CSoundSource
+	class CSoundSource final
+		: public CAudioSource
 	{
 	public:
 		friend CAudioEngine;
-
 		CSoundSource() = delete;
-		CSoundSource(FSourceID InSourceID, CAudioEngine& InAudioEngine);
+		CSoundSource(CAudioEngine& InAudioEngine, FSourceID InSourceID);
 		CSoundSource(const CSoundSource& InOther);
-		void DestroySource();
 
-		void PlaySound(SWavFile& InWavFile, bool InLoop = false);
-		void Play(bool InLoop = false);
-		bool IsPlaying() const;
-
-		void Pause();
-		void Stop();
-		void SetVolume(float InVolume);
-
-		void SetPosition(float InX, float InY, float InZ);
-
-		void SetLooping(bool InLooping);
-		float GetVolume() const;
-
-	private:
-		CAudioEngine& AudioEngine;
-		FSourceID SourceID;
+		void BindWavFile(SWavFile& InWavFile);
 	};
 }

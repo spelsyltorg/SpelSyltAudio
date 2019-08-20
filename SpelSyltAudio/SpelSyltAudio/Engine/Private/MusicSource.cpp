@@ -9,8 +9,7 @@
 //----------------------------------------------------------------------
 
 SSAL::CMusicSource::CMusicSource(FSourceID InSourceID, FBufferID InBuffers[MUSIC_BUFFER_COUNT], CAudioEngine& InAudioEngine)
-	: AudioEngine(InAudioEngine)
-	, SourceID(InSourceID)
+	: CAudioSource(InAudioEngine, InSourceID)
 	, Buffers()
 {
 	for (unsigned int i = 0; i < MUSIC_BUFFER_COUNT; ++i)
@@ -22,8 +21,7 @@ SSAL::CMusicSource::CMusicSource(FSourceID InSourceID, FBufferID InBuffers[MUSIC
 //----------------------------------------------------------------------
 
 SSAL::CMusicSource::CMusicSource(const CMusicSource& InOther)
-	: AudioEngine(InOther.AudioEngine)
-	, SourceID(InOther.SourceID)
+	: CAudioSource(InOther)
 	, Buffers()
 {
 	for (unsigned int i = 0; i < MUSIC_BUFFER_COUNT; ++i)
@@ -52,20 +50,6 @@ void SSAL::CMusicSource::OpenOGGStream(const char* PathToFile)
 void SSAL::CMusicSource::CloseOGGStream()
 {
 	OggFile.CloseStream();
-}
-
-//----------------------------------------------------------------------
-
-void SSAL::CMusicSource::Play()
-{
-	AudioEngine.PlaySource(SourceID);
-}
-
-//----------------------------------------------------------------------
-
-void SSAL::CMusicSource::SetVolume(float InVolume)
-{
-	AudioEngine.SetSourceGain(SourceID, InVolume);
 }
 
 //----------------------------------------------------------------------
