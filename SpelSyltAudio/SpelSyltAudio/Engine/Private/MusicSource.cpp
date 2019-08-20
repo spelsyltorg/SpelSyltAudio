@@ -12,7 +12,6 @@ SSAL::CMusicSource::CMusicSource(FSourceID InSourceID, FBufferID InBuffers[MUSIC
 	: AudioEngine(InAudioEngine)
 	, SourceID(InSourceID)
 	, Buffers()
-	, WriteBuffer(0)
 {
 	for (unsigned int i = 0; i < MUSIC_BUFFER_COUNT; ++i)
 	{
@@ -26,7 +25,6 @@ SSAL::CMusicSource::CMusicSource(const CMusicSource& InOther)
 	: AudioEngine(InOther.AudioEngine)
 	, SourceID(InOther.SourceID)
 	, Buffers()
-	, WriteBuffer(0)
 {
 	for (unsigned int i = 0; i < MUSIC_BUFFER_COUNT; ++i)
 	{
@@ -42,13 +40,11 @@ void SSAL::CMusicSource::OpenOGGStream(const char* PathToFile)
 	OggFile.OpenStream(PathToFile);
 
 	//We enqueue all our buffers at the start to give us some room for streaming
-	for (; WriteBuffer < MUSIC_BUFFER_COUNT; ++WriteBuffer)
+	for (int i = 0; i < MUSIC_BUFFER_COUNT; ++i)
 	{
 		OggFile.ReadNextChunk();
-		AudioEngine.AddBufferToSourceQueue(SourceID, Buffers[WriteBuffer], OggFile.GetCurrentChunk());
+		AudioEngine.AddBufferToSourceQueue(SourceID, Buffers[i], OggFile.GetCurrentChunk());
 	}
-
-	WriteBuffer = 0;
 }
 
 //----------------------------------------------------------------------

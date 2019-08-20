@@ -29,6 +29,5 @@ namespace SSAL
 		CAudioEngine& AudioEngine;
 		FSourceID SourceID;
 		FBufferID Buffers[MUSIC_BUFFER_COUNT];
-		FBufferID WriteBuffer;
 	};
 }
