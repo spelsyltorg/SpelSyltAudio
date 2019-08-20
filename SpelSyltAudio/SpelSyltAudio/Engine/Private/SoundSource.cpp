@@ -4,7 +4,7 @@
 
 //----------------------------------------------------------------------
 
-SSAL::CSoundSource::CSoundSource(unsigned int InSourceID, CAudioEngine& InAudioEngine)
+SSAL::CSoundSource::CSoundSource(FSourceID InSourceID, CAudioEngine& InAudioEngine)
 	: SourceID(InSourceID)
 	, AudioEngine(InAudioEngine)
 {
@@ -22,27 +22,27 @@ SSAL::CSoundSource::CSoundSource(const CSoundSource& InOther)
 
 void SSAL::CSoundSource::DestroySource()
 {
-	AudioEngine.DestroySource(*this);
+	AudioEngine.DestroySource(SourceID);
 }
 
 //----------------------------------------------------------------------
 
 void SSAL::CSoundSource::PlaySound(SWavFile& InWavFile, bool InLoop)
 {
-	AudioEngine.BindBufferToSource(*this, InWavFile);
-	AudioEngine.SetSourceLooping(*this, InLoop);
-	AudioEngine.PlaySource(*this);
+	AudioEngine.BindBufferToSource(SourceID, InWavFile);
+	AudioEngine.SetSourceLooping(SourceID, InLoop);
+	AudioEngine.PlaySource(SourceID);
 }
 
 //----------------------------------------------------------------------
 
 void SSAL::CSoundSource::Play(bool InLoop)
 {
-	AudioEngine.SetSourceLooping(*this, InLoop);
+	AudioEngine.SetSourceLooping(SourceID, InLoop);
 
 	if (!AudioEngine.IsSourcePlaying(*this))
 	{
-		AudioEngine.PlaySource(*this);
+		AudioEngine.PlaySource(SourceID);
 	}
 }
 
@@ -57,35 +57,35 @@ bool SSAL::CSoundSource::IsPlaying() const
 
 void SSAL::CSoundSource::Pause()
 {
-	AudioEngine.PauseSource(*this);
+	AudioEngine.PauseSource(SourceID);
 }
 
 //----------------------------------------------------------------------
 
 void SSAL::CSoundSource::Stop()
 {
-	AudioEngine.StopSource(*this);
+	AudioEngine.StopSource(SourceID);
 }
 
 //----------------------------------------------------------------------
 
 void SSAL::CSoundSource::SetVolume(float InVolume)
 {
-	AudioEngine.SetSourceGain(*this, InVolume);
+	AudioEngine.SetSourceGain(SourceID, InVolume);
 }
 
 //----------------------------------------------------------------------
 
 void SSAL::CSoundSource::SetPosition(float InX, float InY, float InZ)
 {
-	AudioEngine.SetSourcePosition(*this, InX, InY, InZ);
+	AudioEngine.SetSourcePosition(SourceID, InX, InY, InZ);
 }
 
 //----------------------------------------------------------------------
 
 void SSAL::CSoundSource::SetLooping(bool InLooping)
 {
-	AudioEngine.SetSourceLooping(*this, InLooping);
+	AudioEngine.SetSourceLooping(SourceID, InLooping);
 }
 
 //----------------------------------------------------------------------

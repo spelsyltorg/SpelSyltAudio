@@ -1,4 +1,5 @@
 #pragma once
+#include <SpelSyltAudio/Engine/Public/SSALTypes.h>
 
 namespace SSAL
 {
@@ -11,7 +12,7 @@ namespace SSAL
 		friend CAudioEngine;
 
 		CSoundSource() = delete;
-		CSoundSource(unsigned int InSourceID, CAudioEngine& InAudioEngine);
+		CSoundSource(FSourceID InSourceID, CAudioEngine& InAudioEngine);
 		CSoundSource(const CSoundSource& InOther);
 		void DestroySource();
 
@@ -30,6 +31,6 @@ namespace SSAL
 
 	private:
 		CAudioEngine& AudioEngine;
-		unsigned int SourceID;
+		FSourceID SourceID;
 	};
 }
