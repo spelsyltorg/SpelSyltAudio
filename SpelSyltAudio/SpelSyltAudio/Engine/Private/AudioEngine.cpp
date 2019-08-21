@@ -83,7 +83,7 @@ bool SSAL::CAudioEngine::Initialize(int InBufferCount)
 
 	ALboolean SupportEAX2 = alIsExtensionPresent("EAX 2.0");
 
-	Buffers = new unsigned int[BufferCount];
+	Buffers = new unsigned int[InBufferCount];
 	alGenBuffers(InBufferCount, Buffers);
 
 	ErrorCode = alGetError();
@@ -267,22 +267,11 @@ void SSAL::CAudioEngine::ShutDown()
 {
 	ALCcontext* Context = alcGetCurrentContext();
 	ALCdevice* Device = alcGetContextsDevice(Context);
+	alcMakeContextCurrent(nullptr);
+	alcDestroyContext(Context);
+	alcCloseDevice(Device);
 
-	if (Buffers)
-	{
-		alDeleteBuffers(BufferCount, Buffers);
-		delete[] Buffers;
-	}
-
-	if (Context)
-	{
-		alcDestroyContext(Context);
-	}
-
-	if (Device)
-	{
-		alcCloseDevice(Device);
-	}
+	delete[] Buffers;
 }
 
 //----------------------------------------------------------------------
