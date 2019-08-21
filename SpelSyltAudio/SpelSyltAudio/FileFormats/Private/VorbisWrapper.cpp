@@ -62,8 +62,8 @@ void SSAL::CVorbisWrapper::OpenStream(const char* InPath, SOGGFile& InOggFile)
 
 void SSAL::CVorbisWrapper::CloseStream()
 {
-	delete OggFile;
 	ov_clear(OggFile);
+	delete OggFile;
 }
 
 //----------------------------------------------------------------------
