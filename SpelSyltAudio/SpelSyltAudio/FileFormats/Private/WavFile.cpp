@@ -4,6 +4,7 @@
 
 #include <SpelSyltCommonLibrary/System/Public/EndianHelpers.h>
 
+#include <filesystem>
 #include <fstream>
 #include <memory>
 
@@ -41,12 +42,12 @@ void SSAL::SWavFile::LoadFromMemory(char* InDataStart, unsigned int InSize)
 
 void SSAL::SWavFile::LoadFromFile(const char* InPath)
 {
-	std::ifstream FileStream(InPath, std::ifstream::binary);
+	std::ifstream FileStream;
+	FileStream.open(InPath);
+
 	FileStream.seekg(0, std::iostream::end);
 	auto FileSize = FileStream.tellg();
-
 	char* RawFileData = new char[FileSize];
-
 	FileStream.seekg(0, std::iostream::beg);
 
 	FileStream.read(RawFileData, FileSize);
@@ -54,6 +55,7 @@ void SSAL::SWavFile::LoadFromFile(const char* InPath)
 	FileStream.close();
 
 	LoadFromMemory(RawFileData, FileSize);
+	delete[FileSize] RawFileData;
 }
 
 //----------------------------------------------------------------------
